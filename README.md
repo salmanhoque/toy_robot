@@ -1,7 +1,5 @@
 #Toy Robot Simulator
 
-Author: MD. Salman Ul Hoque
-
 ###Application Directory Structure
 
 ```
