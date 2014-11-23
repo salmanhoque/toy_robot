@@ -4,4 +4,4 @@ rvm:
 before_script:
         - mkdir -p shippable/testresults
 script:
-        - rspec spec/suite.rb
+        - rspec spec/
