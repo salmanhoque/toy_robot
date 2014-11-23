@@ -1,4 +1,4 @@
-require File.expand_path('lib/Interface.rb')
+require 'spec_helper'
 
 describe '#InterfaceClass:' do
 

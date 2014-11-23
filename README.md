@@ -18,7 +18,7 @@ Ruby version 2.0.0p247. From command line run  `ruby play.rb`
 
 ### Test Application  
 
-Rspec version 3.1.2. From command line run `rpsec spec/`
+Rspec version 3.1.0. From command line run `rpsec spec/`
 
 ### Test Data
 ```

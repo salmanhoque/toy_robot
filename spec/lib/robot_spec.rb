@@ -1,4 +1,4 @@
-require File.expand_path('lib/robot.rb')
+require 'spec_helper'
 
 describe '#RobotClass:' do
 

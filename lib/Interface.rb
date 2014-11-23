@@ -1,7 +1,6 @@
 # Author : Md.Salman Ul Hoque <s.ulhoque@gmail.com>
 # This file is used to get user input from standrd input.
-
-require File.expand_path('lib/Robot.rb')
+require File.expand_path('lib/robot.rb')
 
 # This is a interface class
 class Interface

@@ -1,3 +1,3 @@
 source 'https://rubygems.org'
 
-gem 'rspec-rails', '~> 3.0.0'
+gem 'rspec', '~> 3.1.0'
