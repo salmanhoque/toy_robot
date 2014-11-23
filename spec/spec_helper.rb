@@ -1,5 +1,5 @@
-require File.join(File.dirname(__FILE__), '../lib/interface.rb')
-require File.join(File.dirname(__FILE__), '../lib/robot.rb')
+require File.expand_path('./lib/interface.rb')
+require File.expand_path('./lib/robot.rb')
 
 RSpec.configure do |config|
   config.order = 'random'
