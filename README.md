@@ -1,3 +1,5 @@
+[![Build Status](https://api.shippable.com/projects/546ff16dd46935d5fbbe4991/badge?branchName=master)](https://app.shippable.com/projects/546ff16dd46935d5fbbe4991/builds/latest)
+
 #Toy Robot Simulator
 
 ###Application Directory Structure
