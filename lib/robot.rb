@@ -1,9 +1,8 @@
 # Author : Md.Salman Ul Hoque <s.ulhoque@gmail.com>
 # This file is used to create and control robots movement.
-# Roboto Class
 class Robot
-  attr_accessor :x, :y, :f
   # Dimension of square table top
+  attr_accessor :x, :y, :f
 
   # Initialize robot when placement is valid
   def initialize(x, y, f)
@@ -21,8 +20,6 @@ class Robot
 
   # Logic to move robot in different directions
 
-  public
-
   def move
     case @f
     when 'NORTH'
@@ -38,8 +35,6 @@ class Robot
 
   # Logic to rotate robot.
 
-  public
-
   def rotate(side)
     from_north = { 'LEFT' => 'WEST', 'RIGHT' => 'EAST' }
     from_south = { 'LEFT' => 'EAST', 'RIGHT' => 'WEST' }
@@ -54,9 +49,6 @@ class Robot
   end
 
   # Prints out robots current position
-
-  public
-
   def report
     puts 'Output: ' + @x.to_s + ',' + @y.to_s + ',' + @f
   end

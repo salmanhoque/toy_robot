@@ -2,12 +2,7 @@
 # This file is used to get user input from standrd input.
 require File.expand_path('lib/robot.rb')
 
-# This is a interface class
 class Interface
-  # Launches the application
-
-  public
-
   def launch
     welcome_message
 

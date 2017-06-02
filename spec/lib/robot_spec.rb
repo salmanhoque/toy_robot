@@ -1,30 +1,23 @@
 require 'spec_helper'
 
-describe '#RobotClass:' do
-
-  describe 'Initilize the robot class' do
-    before :each do
-      @a = Robot.new(0, 0, 'EAST')
-    end
+describe Robot do
+  context 'Initilized with the valid params' do
+    subject(:tom) { described_class.new(0, 0, 'EAST') }
 
     it 'It is a Robot instance' do
-      expect(@a).to be_an_instance_of Robot
+      expect(tom).to be_an_instance_of Robot
     end
 
     it 'Response to the arrtibutes' do
-      expect(@a).to respond_to :x, :y, :f
-    end
-
-    it 'After initilization able get arrtibutes value' do
-      expect(@a.x).to eq(0)
+      expect(tom).to respond_to :x, :y, :f
     end
 
     it 'Able to report current state' do
-      expect { @a.report }.to output("Output: 0,0,EAST\n").to_stdout
+      expect { tom.report }.to output("Output: 0,0,EAST\n").to_stdout
     end
   end
 
-  describe 'Initilization using invalid parameter' do
+  context 'Initilized with the invalid params' do
     it 'Where x is negative' do
       expect { Robot.new(-1, 0, 'EAST') }.to \
         output("Invalid Input\n").to_stdout
@@ -41,61 +34,57 @@ describe '#RobotClass:' do
     end
   end
 
-  describe 'Move method:' do
-    before :each do
-      @a = Robot.new(0, 4, 'NORTH')
-      @a.move
+  describe 'public methods' do
+    subject(:tom) { described_class.new(0, 4, 'NORTH') }
+
+    context '#move' do
+      it 'moves one unit to the NORTH' do
+        tom.move
+        expect { tom.report }.to output("Output: 0,5,NORTH\n").to_stdout
+      end
+
+      it 'throws errors when, it was told to move way too much' do
+        # TODO: tom.move(2)
+        tom.move
+        expect { tom.move }.to output("Can not move further NORTH\n").to_stdout
+      end
     end
 
-    it 'When valid robot moves one unit' do
-      expect { @a.report }.to output("Output: 0,5,NORTH\n").to_stdout
-    end
+    context '#rotate' do
+      it 'rotates to LEFT and faces to WEST' do
+        tom.rotate('LEFT')
+        expect { tom.report }.to output("Output: 0,4,WEST\n").to_stdout
+      end
 
-    it 'When valid robot moves one unit' do
-      expect { @a.move }.to output("Can not move further NORTH\n").to_stdout
-    end
-  end
-
-  describe 'Rotate method:' do
-    before :each do
-      @a = Robot.new(0, 4, 'NORTH')
-    end
-
-    it 'LEFT will rotate NORTH facing robot to WEST' do
-      @a.rotate('LEFT')
-      expect { @a.report }.to output("Output: 0,4,WEST\n").to_stdout
-    end
-
-    it 'RIGHT will rotate NORTH facing robot to EAST' do
-      @a.rotate('RIGHT')
-      expect { @a.report }.to output("Output: 0,4,EAST\n").to_stdout
+      it 'rotates to RIGHT and faces to EAST' do
+        tom.rotate('RIGHT')
+        expect { tom.report }.to output("Output: 0,4,EAST\n").to_stdout
+      end
     end
   end
 
-  describe 'Robot move test:' do
-    before :each do
-      @a = Robot.new(0, 4, 'NORTH')
+  context 'test different move strategy' do
+    subject(:tom) { described_class.new(0, 4, 'NORTH') }
+
+    it 'moves one unit then turn Left and move one unit again' do
+      tom.move
+      tom.rotate('LEFT')
+      expect { tom.move }.to output("Can not move further WEST\n").to_stdout
     end
 
-    it 'Move one unit then turn Left and move one unit again' do
-      @a.move
-      @a.rotate('LEFT')
-      expect { @a.move }.to output("Can not move further WEST\n").to_stdout
+    it 'moves one unit then turn Right and move one unit again' do
+      tom.move
+      tom.rotate('RIGHT')
+      tom.move
+      expect { tom.report }.to output("Output: 1,5,EAST\n").to_stdout
     end
 
-    it 'Move one unit then turn Right and move one unit again' do
-      @a.move
-      @a.rotate('RIGHT')
-      @a.move
-      expect { @a.report }.to output("Output: 1,5,EAST\n").to_stdout
-    end
-
-    it 'Move one unit then turn Right twice and move one unit again' do
-      @a.move
-      @a.rotate('RIGHT')
-      @a.rotate('RIGHT')
-      @a.move
-      expect { @a.report }.to output("Output: 0,4,SOUTH\n").to_stdout
+    it 'moves one unit then turn Right twice and move one unit again' do
+      tom.move
+      tom.rotate('RIGHT')
+      tom.rotate('RIGHT')
+      tom.move
+      expect { tom.report }.to output("Output: 0,4,SOUTH\n").to_stdout
     end
   end
 end
