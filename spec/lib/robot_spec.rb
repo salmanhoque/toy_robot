@@ -1,36 +1,17 @@
 require 'spec_helper'
+require 'pry'
 
 describe Robot do
   context 'Initilized with the valid params' do
-    subject(:tom) { described_class.new(0, 0, 'EAST') }
+    let(:board) { double('Board') }
+    subject(:tom) { described_class.new(board, 0, 0, 'EAST') }
 
     it 'It is a Robot instance' do
       expect(tom).to be_an_instance_of Robot
     end
 
-    it 'Response to the arrtibutes' do
-      expect(tom).to respond_to :x, :y, :f
-    end
-
     it 'Able to report current state' do
-      expect { tom.report }.to output("Output: 0,0,EAST\n").to_stdout
-    end
-  end
-
-  context 'Initilized with the invalid params' do
-    it 'Where x is negative' do
-      expect { Robot.new(-1, 0, 'EAST') }.to \
-        output("Invalid Input\n").to_stdout
-    end
-
-    it 'Where y is negative' do
-      expect { Robot.new(1, -1, 'EAST') }.to \
-        output("Invalid Input\n").to_stdout
-    end
-
-    it 'Where x and y is more than 5 unit' do
-      expect { Robot.new(7, 5, 'EAST') }.to \
-        output("Invalid Input\n").to_stdout
+      expect(tom.report).to eq('Current Position: 0, 0, EAST')
     end
   end
 

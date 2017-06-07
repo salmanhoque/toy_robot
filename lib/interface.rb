@@ -1,7 +1,9 @@
 # Author : Md.Salman Ul Hoque <s.ulhoque@gmail.com>
 # This file is used to get user input from standrd input.
 require File.expand_path('lib/robot.rb')
+require 'pry'
 
+# User Interface
 class Interface
   def launch
     welcome_message

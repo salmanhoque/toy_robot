@@ -1,5 +1,7 @@
 require File.expand_path('./lib/interface.rb')
 require File.expand_path('./lib/robot.rb')
+require File.expand_path('./lib/action.rb')
+require File.expand_path('./lib/board.rb')
 
 RSpec.configure do |config|
   config.order = 'random'

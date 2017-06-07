@@ -1,89 +1,74 @@
-# Author : Md.Salman Ul Hoque <s.ulhoque@gmail.com>
-# This file is used to create and control robots movement.
+require 'pry'
+
 class Robot
-  # Dimension of square table top
-  attr_accessor :x, :y, :f
-
-  # Initialize robot when placement is valid
-  def initialize(x, y, f)
-    @min_unit = 0
-    @max_unit = 5
-
-    if x < @min_unit || x > @max_unit || y < @min_unit || y > @max_unit
-      puts 'Invalid Input'
-    else
-      @x = x
-      @y = y
-      @f = f
-    end
+  def initialize(board, x_axis, y_axis, facing)
+    @board = board
+    @x_axis = x_axis
+    @y_axis = y_axis
+    @facing = facing
   end
 
-  # Logic to move robot in different directions
-
   def move
-    case @f
-    when 'NORTH'
+    case @facing
+    when 'north'
       move_north
-    when 'SOUTH'
+    when 'south'
       move_south
-    when 'EAST'
+    when 'east'
       move_east
-    when 'WEST'
+    when 'west'
       move_west
     end
   end
 
-  # Logic to rotate robot.
-
   def rotate(side)
-    from_north = { 'LEFT' => 'WEST', 'RIGHT' => 'EAST' }
-    from_south = { 'LEFT' => 'EAST', 'RIGHT' => 'WEST' }
-    from_east  = { 'LEFT' => 'NORTH', 'RIGHT' => 'SOUTH' }
-    from_west  = { 'LEFT' => 'SOUTH', 'RIGHT' => 'NORTH' }
-    case @f
-    when 'NORTH' then @f = from_north[side]
-    when 'SOUTH' then @f = from_south[side]
-    when 'EAST' then @f = from_east[side]
-    when 'WEST' then @f = from_west[side]
+    from_north = { 'left' => 'west', 'right' => 'east' }
+    from_south = { 'left' => 'east', 'right' => 'west' }
+    from_east  = { 'left' => 'north', 'right' => 'south' }
+    from_west  = { 'left' => 'south', 'right' => 'north' }
+    case @facing
+    when 'north' then @facing = from_north[side]
+    when 'south' then @facing = from_south[side]
+    when 'east' then @facing = from_east[side]
+    when 'west' then @facing = from_west[side]
     end
   end
 
-  # Prints out robots current position
   def report
-    puts 'Output: ' + @x.to_s + ',' + @y.to_s + ',' + @f
+    "Current Position: #{@x_axis}, #{@y_axis}, #{@facing.upcase}"
   end
 
   private
 
   def move_north
-    if y >= @min_unit && y < @max_unit
-      @y += 1
+    if @y_axis >= @min_unit && @y_axis < @max_unit
+      @y_axis += 1
     else
-      puts 'Can not move further NORTH'
+      'Can not move further NORTH'
     end
   end
 
   def move_south
-    if y > @min_unit && y <= @max_unit
-      @y -= 1
+    if @y_axis > @min_unit && @y_axis <= @max_unit
+      @y_axis -= 1
     else
-      puts 'Can not move further SOUTH'
+      'Can not move further SOUTH'
     end
   end
 
   def move_east
-    if x >= @min_unit && x < @max_unit
-      @x += 1
+    if @x_axis >= @min_unit && @x_axis < @max_unit
+      @x_axis += 1
     else
-      puts 'Can not move further EAST'
+      'Can not move further EAST'
     end
   end
 
   def move_west
-    if x > @min_unit && x <= @max_unit
-      @x -= 1
+    if @x_axis > @min_unit && @x_axis <= @max_unit
+      @x_axis -= 1
     else
-      puts 'Can not move further WEST'
+      'Can not move further WEST'
     end
   end
 end
