@@ -1,0 +1,1 @@
+Dir[File.expand_path('lib/*.rb', Dir.pwd)].each { |file| require file }
