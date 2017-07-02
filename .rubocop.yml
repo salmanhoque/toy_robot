@@ -1,0 +1,20 @@
+Style/Documentation:
+  Enabled: false
+
+Style/PercentLiteralDelimiters:
+  PreferredDelimiters:
+    '%w': '{}'
+    '%W': '{}'
+    '%i': '{}'
+
+Metrics/LineLength:
+  Severity: refactor
+  Max: 180
+
+Metrics/ModuleLength:
+  Exclude:
+    - "**/*_spec.rb"
+
+Metrics/BlockLength:
+  Exclude:
+    - "**/*_spec.rb"

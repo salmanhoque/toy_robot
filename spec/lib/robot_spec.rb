@@ -1,71 +1,100 @@
 require 'spec_helper'
-require 'pry'
 
 describe Robot do
-  context 'Initilized with the valid params' do
+  context 'Initilized with' do
     let(:board) { double('Board') }
-    subject(:tom) { described_class.new(board, 0, 0, 'EAST') }
 
-    it 'It is a Robot instance' do
-      expect(tom).to be_an_instance_of Robot
+    context 'valid valid params' do
+      subject(:tom) { described_class.new(board, 0, 0, 'east') }
+
+      it 'is a Robot instance' do
+        expect(tom).to be_an_instance_of Robot
+      end
+
+      it 'ables to report current state' do
+        expect(tom.report).to eq('Current Position: 0, 0, EAST')
+      end
     end
 
-    it 'Able to report current state' do
-      expect(tom.report).to eq('Current Position: 0, 0, EAST')
+    context 'invalid params' do
+      it 'throws error when intialized with wrong params' do
+        expect {
+          described_class.new(board, 0, 0, 'north-east')
+        }.to raise_error('Okay: valid directions are NORTH, EAST, SOUTH and WEST!')
+      end
     end
   end
 
   describe 'public methods' do
-    subject(:tom) { described_class.new(0, 4, 'NORTH') }
+    let(:board) { Board.new(5, 5) }
 
     context '#move' do
-      it 'moves one unit to the NORTH' do
-        tom.move
-        expect { tom.report }.to output("Output: 0,5,NORTH\n").to_stdout
+      context 'vaild moves' do
+        it 'moves one unit to the NORTH' do
+          tom = described_class.new(board, 0, 4, 'north')
+          tom.move
+          expect(tom.report).to eq('Current Position: 0, 5, NORTH')
+        end
       end
 
-      it 'throws errors when, it was told to move way too much' do
-        # TODO: tom.move(2)
-        tom.move
-        expect { tom.move }.to output("Can not move further NORTH\n").to_stdout
+      context 'invalid moves' do
+        it 'throws errors when, it was told to move way too much north' do
+          tom = described_class.new(board, 0, 5, 'north')
+          expect { tom.move }.to raise_error('Can not move further NORTH')
+
+          # check current possion after error message
+          expect(tom.report).to eq('Current Position: 0, 5, NORTH')
+        end
+
+        it 'throws errors when, it was told to move way too much south' do
+          tom = described_class.new(board, 0, 0, 'south')
+          expect { tom.move }.to raise_error('Can not move further SOUTH')
+        end
+
+        it 'throws errors when, it was told to move way too much east' do
+          tom = described_class.new(board, 5, 0, 'east')
+          expect { tom.move }.to raise_error('Can not move further EAST')
+        end
+
+        it 'throws errors when, it was told to move way too much west' do
+          tom = described_class.new(board, 0, 0, 'west')
+          expect { tom.move }.to raise_error('Can not move further WEST')
+        end
       end
     end
 
     context '#rotate' do
-      it 'rotates to LEFT and faces to WEST' do
-        tom.rotate('LEFT')
-        expect { tom.report }.to output("Output: 0,4,WEST\n").to_stdout
+      it 'rotates from NORTH to clockwise' do
+        tom = described_class.new(board, 0, 5, 'north')
+
+        tom.rotate_right
+        expect(tom.report).to eq('Current Position: 0, 5, EAST')
+
+        tom.rotate_right
+        expect(tom.report).to eq('Current Position: 0, 5, SOUTH')
+
+        tom.rotate_right
+        expect(tom.report).to eq('Current Position: 0, 5, WEST')
+
+        tom.rotate_right
+        expect(tom.report).to eq('Current Position: 0, 5, NORTH')
       end
 
-      it 'rotates to RIGHT and faces to EAST' do
-        tom.rotate('RIGHT')
-        expect { tom.report }.to output("Output: 0,4,EAST\n").to_stdout
+      it 'rotates from NORTH to anticlockwise' do
+        tom = described_class.new(board, 0, 5, 'north')
+
+        tom.rotate_left
+        expect(tom.report).to eq('Current Position: 0, 5, WEST')
+
+        tom.rotate_left
+        expect(tom.report).to eq('Current Position: 0, 5, SOUTH')
+
+        tom.rotate_left
+        expect(tom.report).to eq('Current Position: 0, 5, EAST')
+
+        tom.rotate_left
+        expect(tom.report).to eq('Current Position: 0, 5, NORTH')
       end
-    end
-  end
-
-  context 'test different move strategy' do
-    subject(:tom) { described_class.new(0, 4, 'NORTH') }
-
-    it 'moves one unit then turn Left and move one unit again' do
-      tom.move
-      tom.rotate('LEFT')
-      expect { tom.move }.to output("Can not move further WEST\n").to_stdout
-    end
-
-    it 'moves one unit then turn Right and move one unit again' do
-      tom.move
-      tom.rotate('RIGHT')
-      tom.move
-      expect { tom.report }.to output("Output: 1,5,EAST\n").to_stdout
-    end
-
-    it 'moves one unit then turn Right twice and move one unit again' do
-      tom.move
-      tom.rotate('RIGHT')
-      tom.rotate('RIGHT')
-      tom.move
-      expect { tom.report }.to output("Output: 0,4,SOUTH\n").to_stdout
     end
   end
 end

@@ -1,4 +1,5 @@
 class Action
+  attr_accessor :error
   ACTIONS = %w{board place move left right report help}.freeze
 
   def initialize(interface = nil)
@@ -45,6 +46,7 @@ class Action
 
   def make_decision
     case @action
+<<<<<<< HEAD
     when 'board' then make_board
     when 'place' then place_robot
     when 'move' then move_robot
@@ -52,6 +54,21 @@ class Action
     when 'right' then @robot.rotate_right
     when 'report' then report
     when 'help' then help_message
+=======
+    when 'board'
+      @board = Board.new(@x_axis, @y_axis)
+      validate_board
+    when 'place'
+      @board ||= Board.new(5, 5)
+      validate_position
+      @robot = Robot.new(@board, @x_axis, @y_axis, @facing)
+    when 'move'
+      @robot.move
+    when 'left'
+      @robot.rotate_left
+    when 'right'
+      @robot.rotate_right
+>>>>>>> c4d9780... robot movement fixed
     end
   end
 

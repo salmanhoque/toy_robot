@@ -1,7 +1,12 @@
-require 'pry'
-
 class Robot
+  # Clockwise direction
+  DIRECTIONS = %w{north east south west}.freeze
+
   def initialize(board, x_axis, y_axis, facing)
+    unless DIRECTIONS.include?(facing)
+      raise ArgumentError, 'Okay: valid directions are NORTH, EAST, SOUTH and WEST!'
+    end
+
     @board = board
     @x_axis = x_axis
     @y_axis = y_axis
@@ -9,29 +14,23 @@ class Robot
   end
 
   def move
+    validate_move
+
+    # move 1 unit at a time.
     case @facing
-    when 'north'
-      move_north
-    when 'south'
-      move_south
-    when 'east'
-      move_east
-    when 'west'
-      move_west
+    when 'north' then @y_axis += 1
+    when 'south' then @y_axis -= 1
+    when 'east' then @x_axis += 1
+    when 'west' then @x_axis -= 1
     end
   end
 
-  def rotate(side)
-    from_north = { 'left' => 'west', 'right' => 'east' }
-    from_south = { 'left' => 'east', 'right' => 'west' }
-    from_east  = { 'left' => 'north', 'right' => 'south' }
-    from_west  = { 'left' => 'south', 'right' => 'north' }
-    case @facing
-    when 'north' then @facing = from_north[side]
-    when 'south' then @facing = from_south[side]
-    when 'east' then @facing = from_east[side]
-    when 'west' then @facing = from_west[side]
-    end
+  def rotate_left
+    @facing = DIRECTIONS[DIRECTIONS.index(@facing) - 1]
+  end
+
+  def rotate_right
+    @facing = DIRECTIONS[(DIRECTIONS.index(@facing) + 1) % 4]
   end
 
   def report
@@ -40,35 +39,17 @@ class Robot
 
   private
 
-  def move_north
-    if @y_axis >= @min_unit && @y_axis < @max_unit
-      @y_axis += 1
-    else
-      'Can not move further NORTH'
-    end
+  def validate_move
+    return if validation_conditions
+    raise InvalidMoveError, "Can not move further #{@facing.upcase}"
   end
 
-  def move_south
-    if @y_axis > @min_unit && @y_axis <= @max_unit
-      @y_axis -= 1
-    else
-      'Can not move further SOUTH'
-    end
-  end
-
-  def move_east
-    if @x_axis >= @min_unit && @x_axis < @max_unit
-      @x_axis += 1
-    else
-      'Can not move further EAST'
-    end
-  end
-
-  def move_west
-    if @x_axis > @min_unit && @x_axis <= @max_unit
-      @x_axis -= 1
-    else
-      'Can not move further WEST'
+  def validation_conditions
+    case @facing
+    when 'north' then @y_axis < @board.y_axis_unit
+    when 'south' then @y_axis > @board.min_unit
+    when 'east' then @x_axis < @board.x_axis_unit
+    when 'west' then @x_axis > @board.min_unit
     end
   end
 end
